@@ -1,11 +1,54 @@
 package aco;
 
+import java.util.List;
+
 public class Estimator implements ArcEstimator {
+	
+	private static final double alpha = 1.0;
+	private static final double beta = 2.0;
+	private static final double evaporation_rate = 0.5;
+	private double[][] etha;
+	private double contributes[][];
+	private double arcWeight[][];
+	
+	public Estimator(double[][] arcWeight, int spaceSize){
+		this.arcWeight = arcWeight;
+		this.contributes = new double[spaceSize][spaceSize];
+		this.etha = new double[spaceSize][spaceSize];
+	}
 
 	@Override
-	public int stateTransitionRule(int index, int[] localSolution) {
-		// TODO Auto-generated method stub
-		return -1;
+	public double getAlpha() {
+		return alpha;
+	}
+
+	@Override
+	public double getBeta() {
+		return beta;
+	}
+
+	@Override
+	public double getEvapRate() {
+		return evaporation_rate;
+	}
+
+	/*@Override
+	public double getEtha(int x_coord, int y_coord) {
+		return etha[x_coord][y_coord];
+	}*/
+	
+	public double[][] getEtha() {
+		return etha;
+	}
+
+	/**
+	 * Uses contributes matrix
+	 * */
+	@Override
+	public void localUpdateRule(List<Integer> solution) {
+		//To calculate the contributes
+		
+		
 	}
 
 }

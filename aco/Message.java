@@ -5,7 +5,7 @@ import java.util.List;
 public class Message {
 	
 	public static enum MsgType {
-		GO, END, LOCALUPDATE, GLOBALUPDATE, STATETRANS
+		GO, END, GLOBALUPDATE, STATETRANS
 	}
 	
 	private MsgType type;
@@ -31,6 +31,15 @@ public class Message {
 		this.state = state;
 		this.localSolution = localSolution;
 	}
+	
+	public void setState(int state){
+		this.state = state;
+	}
+	
+	public void setupSolution(List<Integer> localSolution){
+		this.localSolution = localSolution;
+	}
+	
 	
 	public int getXCoord(){
 		return this.x_coord;
