@@ -1,6 +1,8 @@
 package aco;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
@@ -50,7 +52,36 @@ public class AntGraph extends UntypedActor{
 	}
 	
 	public int stateTransitionRule(int index, List<Integer> localSolution) {
-		//Implementare la formula di calcolo probabilità più metodo montecarlo 
+		
+		List<Integer> visitableNodes = new LinkedList<>();
+		double[] nodes = estimator.getLineWeight(index);
+		for(int i = 0; i < nodes.length; i++){
+			if(nodes[i] != 0)
+				visitableNodes.add(i);
+		}
+		
+		//remove visited nodes
+		visitableNodes.removeAll(localSolution);
+		
+		List<Double> cumulateCostOfNodes = new LinkedList<>();
+		Double temp = 0.0;
+		
+		for(Integer i : visitableNodes){
+			cumulateCostOfNodes.add(Math.pow(nodes[i], estimator.getAlpha())*
+					Math.pow(etha[index][i], estimator.getBeta())+temp);
+			temp += Math.pow(nodes[i], estimator.getAlpha()) * Math.pow(etha[index][i], estimator.getBeta());
+		}
+		
+		Random r = new Random();
+		double choice = r.nextDouble();
+		
+		for(int i = 0; i < cumulateCostOfNodes.size(); i++){
+			if(choice <= cumulateCostOfNodes.get(i)/temp){
+				return visitableNodes.get(i);
+			}
+		}
+		
+		
 		return -1;
 	}
 }

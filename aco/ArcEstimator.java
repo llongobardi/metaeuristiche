@@ -12,6 +12,8 @@ public interface ArcEstimator{
 	
 	//public double getEtha(int x_coord, int y_coord );
 	
+	public double[] getLineWeight(int index);
+	
 	public double[][] getEtha();
 	
 	public void localUpdateRule(List<Integer> solution);

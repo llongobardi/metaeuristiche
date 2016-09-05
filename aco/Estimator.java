@@ -31,6 +31,15 @@ public class Estimator implements ArcEstimator {
 	public double getEvapRate() {
 		return evaporation_rate;
 	}
+	
+	public double getArcWeight(int index1, int index2){
+		return this.arcWeight[index1][index2];
+	}
+	
+	@Override
+	public double[] getLineWeight(int index){
+		return this.arcWeight[index];
+	}
 
 	/*@Override
 	public double getEtha(int x_coord, int y_coord) {
