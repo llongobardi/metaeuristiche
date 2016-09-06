@@ -5,7 +5,7 @@ import java.util.List;
 public class Message {
 	
 	public static enum MsgType {
-		GO, END, GLOBALUPDATE, STATETRANS
+		GO, END, GLOBALUPDATE, STATETRANS, START
 	}
 	
 	private MsgType type;
