@@ -1,5 +1,6 @@
 package aco;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Estimator implements ArcEstimator {
@@ -11,12 +12,16 @@ public class Estimator implements ArcEstimator {
 	private double contributes[][];
 	private double arcWeight[][];
 	private int spaceSize;
+	private double bestCost;
+	private List<Integer> bestSolution;
 	
 	public Estimator(double[][] arcWeight, int spaceSize){
 		this.arcWeight = arcWeight;
 		this.contributes = new double[spaceSize][spaceSize];
 		this.etha = new double[spaceSize][spaceSize];
 		this.spaceSize = spaceSize;
+		this.bestCost = Double.MAX_VALUE;
+		this.bestSolution = new LinkedList<>();
 	}
 
 	@Override
@@ -43,10 +48,6 @@ public class Estimator implements ArcEstimator {
 		return this.arcWeight[index];
 	}
 
-	/*@Override
-	public double getEtha(int x_coord, int y_coord) {
-		return etha[x_coord][y_coord];
-	}*/
 	
 	public double[][] getEtha() {
 		return etha;
@@ -66,11 +67,23 @@ public class Estimator implements ArcEstimator {
 		for(int i=0; i<solution.size()-1; i++){
 			cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
 		}
+		if (cost<bestCost){
+			bestCost=cost;
+			this.bestSolution = solution;
+		}
 		//Trovato il costo, lo aggiungo alla matrice dei contributi
 		for(int i=0; i<solution.size()-1; i++){
 			contributes[solution.get(i)][solution.get(i+1)]+=1/cost; //regola per TSP
 			}
 		
+	}
+	
+	public double getBestSolutionCost(){
+		return this.bestCost;
+	}
+	
+	public List<Integer> getBestSolution(){
+		return this.bestSolution;
 	}
 
 }
