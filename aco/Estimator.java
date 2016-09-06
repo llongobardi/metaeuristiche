@@ -10,11 +10,13 @@ public class Estimator implements ArcEstimator {
 	private double[][] etha;
 	private double contributes[][];
 	private double arcWeight[][];
+	private int spaceSize;
 	
 	public Estimator(double[][] arcWeight, int spaceSize){
 		this.arcWeight = arcWeight;
 		this.contributes = new double[spaceSize][spaceSize];
 		this.etha = new double[spaceSize][spaceSize];
+		this.spaceSize = spaceSize;
 	}
 
 	@Override
@@ -49,14 +51,25 @@ public class Estimator implements ArcEstimator {
 	public double[][] getEtha() {
 		return etha;
 	}
+	
+	public double getContribute(int index1, int index2){
+		return this.contributes[index1][index2];
+	}
 
 	/**
-	 * Uses contributes matrix
+	 * Modifies contributes according to the solution of each single ant.
 	 * */
 	@Override
 	public void localUpdateRule(List<Integer> solution) {
 		//To calculate the contributes
-		
+		double cost = 0.0;
+		for(int i=0; i<solution.size()-2; i++){
+			cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
+		}
+		//Trovato il costo, lo aggiungo alla matrice dei contributi
+		for(int i=0; i<solution.size()-2; i++){
+			contributes[solution.get(i)][solution.get(i+1)]+=1/cost; //regola per TSP
+			}
 		
 	}
 

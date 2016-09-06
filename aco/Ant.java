@@ -31,7 +31,10 @@ public class Ant extends UntypedActor{
 			} else if (((Message)m).getType().equals(Message.MsgType.STATETRANS)){
 				localSolution.add(((Message) m).getState());
 				if(localSolution.size() == this.spaceSize){
-					graph.tell(new Message(Message.MsgType.END), getSelf());
+					Message msg = new Message(Message.MsgType.END);
+					msg.setupSolution(localSolution);
+					graph.tell(msg, getSelf()); //gli invio la mia soluzione
+					//graph.tell(new Message(Message.MsgType.END), getSelf());
 				} else {
 					Message msg = new Message(Message.MsgType.STATETRANS);
 					msg.setupStateRequest(localSolution.get(localSolution.size()-1), localSolution);

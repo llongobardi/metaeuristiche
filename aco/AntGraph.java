@@ -38,6 +38,7 @@ public class AntGraph extends UntypedActor{
 				getSender().tell(msg, getSelf());
 			} else if (((Message) m).getType().equals(Message.MsgType.END)){
 				antEnded++;
+				estimator.localUpdateRule(((Message) m).getLocalSolution());//modifico i contributi
 				if (antEnded == spaceSize){ //spaceSize è anche il numero di formiche
 					antEnded=0;
 					this.globalUpdateRule();//update del feromone
@@ -47,21 +48,27 @@ public class AntGraph extends UntypedActor{
 		}
 	}
 	
-	private void globalUpdateRule(){
+	private void globalUpdateRule(){//aggiornamento della traccia
+		double temp[][] = new double[spaceSize][spaceSize];
+		for(int i=0; i<spaceSize; i++){
+			for(int j=0; j<spaceSize; j++){
+				temp[i][j] = estimator.getEvapRate()*pheromone[i][j] + estimator.getContribute(i, j);
+			}
+		}
 		
 	}
 	
 	public int stateTransitionRule(int index, List<Integer> localSolution) {
 		
 		List<Integer> visitableNodes = new LinkedList<>();
-		double[] nodes = estimator.getLineWeight(index);
+		double[] nodes = estimator.getLineWeight(index); //prendo i pesi per quello specifico indice 
 		for(int i = 0; i < nodes.length; i++){
 			if(nodes[i] != 0)
 				visitableNodes.add(i);
 		}
 		
 		//remove visited nodes
-		visitableNodes.removeAll(localSolution);
+		visitableNodes.removeAll(localSolution);//tra i possibili nodi tolgo quelli già visitati
 		
 		List<Double> cumulateCostOfNodes = new LinkedList<>();
 		Double temp = 0.0;
@@ -74,10 +81,10 @@ public class AntGraph extends UntypedActor{
 		
 		Random r = new Random();
 		double choice = r.nextDouble();
-		
+		//montecarlo 
 		for(int i = 0; i < cumulateCostOfNodes.size(); i++){
 			if(choice <= cumulateCostOfNodes.get(i)/temp){
-				return visitableNodes.get(i);
+				return visitableNodes.get(i);//ritorno il prossimo stato
 			}
 		}
 		
