@@ -42,8 +42,7 @@ public class Ant extends UntypedActor{
 				}
 			}
 			
-		}
-		
+		}		
 	}
 
 }

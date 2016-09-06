@@ -55,7 +55,7 @@ public class AntGraph extends UntypedActor{
 				temp[i][j] = estimator.getEvapRate()*pheromone[i][j] + estimator.getContribute(i, j);
 			}
 		}
-		
+		pheromone = temp;	
 	}
 	
 	public int stateTransitionRule(int index, List<Integer> localSolution) {

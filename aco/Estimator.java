@@ -63,11 +63,11 @@ public class Estimator implements ArcEstimator {
 	public void localUpdateRule(List<Integer> solution) {
 		//To calculate the contributes
 		double cost = 0.0;
-		for(int i=0; i<solution.size()-2; i++){
+		for(int i=0; i<solution.size()-1; i++){
 			cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
 		}
 		//Trovato il costo, lo aggiungo alla matrice dei contributi
-		for(int i=0; i<solution.size()-2; i++){
+		for(int i=0; i<solution.size()-1; i++){
 			contributes[solution.get(i)][solution.get(i+1)]+=1/cost; //regola per TSP
 			}
 		
