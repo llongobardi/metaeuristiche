@@ -19,5 +19,9 @@ public interface ArcEstimator{
 	public void localUpdateRule(List<Integer> solution);
 	
 	public double getContribute(int index1, int index2);
+	
+	public double getBestSolutionCost();
+	
+	public List<Integer> getBestSolution();
 
 }

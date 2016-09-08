@@ -18,7 +18,7 @@ public class MainTSP {
 		ArcEstimator est = new Estimator(weights,spaceSize);
 		ActorRef colony;// = new AntColony(spaceSize,100,weights,est);
 		ActorSystem system = ActorSystem.create("tsp");
-		colony = system.actorOf(Props.create(AntGraph.class,spaceSize,100,weights,est));
+		colony = system.actorOf(Props.create(AntColony.class,spaceSize,100,weights,est));
 		colony.tell(new Message(Message.MsgType.START),ActorRef.noSender());
 	}
 }

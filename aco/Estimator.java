@@ -22,6 +22,16 @@ public class Estimator implements ArcEstimator {
 		this.spaceSize = spaceSize;
 		this.bestCost = Double.MAX_VALUE;
 		this.bestSolution = new LinkedList<>();
+		for (int i = 0; i<spaceSize; i++){
+			for (int j =0; j<spaceSize; j++){
+				if(i!=j){
+					etha[i][j] = 1/arcWeight[i][j];
+				} else {
+					etha[i][j] = 0;
+				}
+				 
+			}
+		}
 	}
 
 	@Override
@@ -78,10 +88,12 @@ public class Estimator implements ArcEstimator {
 		
 	}
 	
+	@Override
 	public double getBestSolutionCost(){
 		return this.bestCost;
 	}
 	
+	@Override
 	public List<Integer> getBestSolution(){
 		return this.bestSolution;
 	}

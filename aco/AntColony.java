@@ -26,7 +26,7 @@ public class AntColony extends UntypedActor {
 		
 		ants = new ArrayList<>(spaceSize);
 		
-		graph = system.actorOf(Props.create(AntGraph.class, estimator ,spaceSize,this));
+		graph = system.actorOf(Props.create(AntGraph.class, estimator ,spaceSize,this.getSelf()));
 		
 		for(int i = 0; i < spaceSize; i++)
 			ants.add(system.actorOf(Props.create(Ant.class,0,spaceSize,graph)));
@@ -60,6 +60,8 @@ public class AntColony extends UntypedActor {
 						iterator.next().tell(new Message(Message.MsgType.GO), this.getSelf());
 					}*/
 					startAnts();
+				} else {
+					System.out.print("Sol migliore: "+estimator.getBestSolution().toString() + "Costo sol: " + estimator.getBestSolutionCost());
 				}
 			} else if (((Message) m).getType().equals(Message.MsgType.START)){
 				startAnts();
