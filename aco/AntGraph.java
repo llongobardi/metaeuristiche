@@ -50,14 +50,22 @@ public class AntGraph extends UntypedActor{
 	
 	private void globalUpdateRule(){//aggiornamento della traccia
 		double temp[][] = new double[spaceSize][spaceSize];
-		for(int i=0; i<spaceSize; i++){
+		/*for(int i=0; i<spaceSize; i++){
 			for(int j=0; j<spaceSize; j++){
 				temp[i][j] = estimator.getEvapRate()*pheromone[i][j] + estimator.getContribute(i, j);
+				//equazione (8) per BPP --> equazione (4)
+			}
+		}*/
+		
+		for (int i =0; i<spaceSize; i++){
+			for (int j=0; j<spaceSize; j++){
+				//temp[i][j] =
 			}
 		}
 		pheromone = temp;	
 	}
 	
+	//equazione (6) per BPP
 	public int stateTransitionRule(int index, List<Integer> localSolution) {
 		
 		List<Integer> visitableNodes = new LinkedList<>();

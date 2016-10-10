@@ -8,12 +8,12 @@ public class Estimator implements ArcEstimator {
 	private static final double alpha = 1.0;
 	private static final double beta = 2.0;
 	private static final double evaporation_rate = 0.5;
-	private double[][] etha;
+	private double[][] etha; //nel caso di BPP, etha è il peso dell'oggetto
 	private double contributes[][];
 	private double arcWeight[][];
 	private int spaceSize;
 	private double bestCost;
-	private List<Integer> bestSolution;
+	private List<Bin> bestSolution;
 	
 	public Estimator(double[][] arcWeight, int spaceSize){
 		this.arcWeight = arcWeight;
@@ -63,20 +63,25 @@ public class Estimator implements ArcEstimator {
 		return etha;
 	}
 	
-	public double getContribute(int index1, int index2){
+	public double getContribute(int index1, int index2){ //get tau matrix
 		return this.contributes[index1][index2];
 	}
 
 	/**
 	 * Modifies contributes according to the solution of each single ant.
 	 * */
-	@Override
-	public void localUpdateRule(List<Integer> solution) {
+	
+	
+	//Equazione (7)
+	/*public void localUpdateRule(List<Integer> solution) {
 		//To calculate the contributes
 		double cost = 0.0;
 		for(int i=0; i<solution.size()-1; i++){
-			cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
+			//Ant.getNumBin
+			//cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
 		}
+		
+		//cost è il numero di bin 
 		if (cost<bestCost){
 			bestCost=cost;
 			this.bestSolution = solution;
@@ -84,9 +89,12 @@ public class Estimator implements ArcEstimator {
 		//Trovato il costo, lo aggiungo alla matrice dei contributi
 		for(int i=0; i<solution.size()-1; i++){
 			contributes[solution.get(i)][solution.get(i+1)]+=1/cost; //regola per TSP
+			//contributes[solution.get(i)][solution.get(i+1)]+=1/numBin
 			}
 		
-	}
+	}*/
+	
+	
 	
 	@Override
 	public double getBestSolutionCost(){
@@ -94,8 +102,28 @@ public class Estimator implements ArcEstimator {
 	}
 	
 	@Override
-	public List<Integer> getBestSolution(){
+	public List<Bin> getBestSolution(){
 		return this.bestSolution;
+	}
+
+	@Override
+	public void localUpdateRule(List<Bin> solution) {
+		
+		int cost = solution.size();
+		
+		if (cost<bestCost){
+			bestCost=cost;
+			this.bestSolution = solution;
+		}
+		
+		for(Bin b : solution){
+			for (int i = 0; i< InitializeBPP.model.getObjects().size(); i++){
+				
+				}
+			}
+		
+		
+		
 	}
 
 }

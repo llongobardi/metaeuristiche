@@ -16,12 +16,13 @@ public interface ArcEstimator{
 	
 	public double[][] getEtha();
 	
-	public void localUpdateRule(List<Integer> solution);
+	public void localUpdateRule(List<Bin> solution);
 	
 	public double getContribute(int index1, int index2);
 	
 	public double getBestSolutionCost();
 	
-	public List<Integer> getBestSolution();
+	public List<Bin> getBestSolution();
+	//public List<Integer> getBestSolution();
 
 }

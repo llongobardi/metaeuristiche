@@ -54,11 +54,6 @@ public class AntColony extends UntypedActor {
 			if (((Message) m).getType().equals(Message.MsgType.END)){
 				numIter++;
 				if (numIter<maxIter){
-					/*Iterator<ActorRef> iterator = ants.iterator();
-					
-					while(iterator.hasNext()){
-						iterator.next().tell(new Message(Message.MsgType.GO), this.getSelf());
-					}*/
 					startAnts();
 				} else {
 					System.out.print("Sol migliore: "+estimator.getBestSolution().toString() + "Costo sol: " + estimator.getBestSolutionCost());
