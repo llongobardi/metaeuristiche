@@ -10,16 +10,16 @@ public class Ant extends UntypedActor{
 	
 	private ActorRef graph;
 	
-	private List<Integer> localSolution;
+	private AntSolution localSolution;
 	private int spaceSize, startNode;
 	
 	public Ant(int startNode, int spaceSize,ActorRef graph){
 		
 		this.graph = graph;
-		localSolution = new LinkedList<>();
+		localSolution = new AntSolution();
 		this.spaceSize = spaceSize;
 		this.startNode = startNode;
-		localSolution.add(startNode);
+		localSolution.addItem(startNode, InitializeBPP.model.getObjects().get(startNode));
 	}
 
 	@Override
@@ -27,12 +27,12 @@ public class Ant extends UntypedActor{
 		if(m instanceof Message){
 			if(((Message)m).getType().equals(Message.MsgType.GO)){
 				localSolution.clear();
-				localSolution.add(startNode);
+				localSolution.addItem(startNode,InitializeBPP.model.getObjects().get(startNode));
 				Message msg = new Message(Message.MsgType.STATETRANS);
-				msg.setupStateRequest(localSolution.get(localSolution.size()-1), localSolution);
+				msg.setupStateRequest(localSolution);
 				graph.tell(msg,this.getSelf());
 			} else if (((Message)m).getType().equals(Message.MsgType.STATETRANS)){
-				localSolution.add(((Message) m).getState());
+				localSolution.addItem(((Message) m).getState(), InitializeBPP.model.getObjects().get(((Message) m).getState()));
 				if(localSolution.size() == this.spaceSize){
 					Message msg = new Message(Message.MsgType.END);
 					msg.setupSolution(localSolution);
@@ -40,7 +40,7 @@ public class Ant extends UntypedActor{
 					//graph.tell(new Message(Message.MsgType.END), getSelf());
 				} else {
 					Message msg = new Message(Message.MsgType.STATETRANS);
-					msg.setupStateRequest(localSolution.get(localSolution.size()-1), localSolution);
+					msg.setupStateRequest(localSolution);
 					graph.tell(msg,this.getSelf());
 				}
 			}

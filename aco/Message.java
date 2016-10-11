@@ -1,6 +1,5 @@
 package aco;
 
-import java.util.List;
 
 public class Message {
 	
@@ -12,7 +11,7 @@ public class Message {
 	private int x_coord;
 	private int y_coord;
 	private int state;
-	private List<Integer> localSolution;
+	private AntSolution localSolution;
 	
 	public Message(MsgType type){
 		this.type = type;
@@ -27,16 +26,15 @@ public class Message {
 		this.y_coord = y_coord;
 	}
 	
-	public void setupStateRequest(int state, List<Integer> localSolution){
-		this.state = state;
-		this.localSolution = localSolution;
+	public void setupStateRequest(AntSolution localSolution){
+		this.setupSolution(localSolution);
 	}
 	
 	public void setState(int state){
 		this.state = state;
 	}
 	
-	public void setupSolution(List<Integer> localSolution){
+	public void setupSolution(AntSolution localSolution){
 		this.localSolution = localSolution;
 	}
 	
@@ -53,7 +51,7 @@ public class Message {
 		return state;
 	}
 	
-	public List<Integer> getLocalSolution(){
+	public AntSolution getLocalSolution(){
 		return this.localSolution;
 	}
 

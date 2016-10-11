@@ -31,15 +31,15 @@ public class AntGraph extends UntypedActor{
 	public void onReceive(Object m) throws Throwable {
 		if(m instanceof Message){
 			if (((Message) m).getType().equals(Message.MsgType.STATETRANS)){
-				List<Integer> lst = ((Message) m).getLocalSolution();
-				int state = this.stateTransitionRule(((Message) m).getState(), lst);
+				AntSolution sol = ((Message) m).getLocalSolution();
+				int state = this.stateTransitionRule(((Message) m).getState(), sol);
 				Message msg = new Message(Message.MsgType.STATETRANS);
 				msg.setState(state);
 				getSender().tell(msg, getSelf());
 			} else if (((Message) m).getType().equals(Message.MsgType.END)){
 				antEnded++;
 				estimator.localUpdateRule(((Message) m).getLocalSolution());//modifico i contributi
-				if (antEnded == spaceSize){ //spaceSize è anche il numero di formiche
+				if (antEnded == spaceSize){ //spaceSize ï¿½ anche il numero di formiche
 					antEnded=0;
 					this.globalUpdateRule();//update del feromone
 					colony.tell(new Message(Message.MsgType.END), getSelf());
@@ -66,7 +66,7 @@ public class AntGraph extends UntypedActor{
 	}
 	
 	//equazione (6) per BPP
-	public int stateTransitionRule(int index, List<Integer> localSolution) {
+	public int stateTransitionRule(int index, AntSolution localSolution) {
 		
 		List<Integer> visitableNodes = new LinkedList<>();
 		double[] nodes = estimator.getLineWeight(index); //prendo i pesi per quello specifico indice 
@@ -76,7 +76,7 @@ public class AntGraph extends UntypedActor{
 		}
 		
 		//remove visited nodes
-		visitableNodes.removeAll(localSolution);//tra i possibili nodi tolgo quelli già visitati
+		visitableNodes.removeAll(localSolution);//tra i possibili nodi tolgo quelli giï¿½ visitati
 		
 		List<Double> cumulateCostOfNodes = new LinkedList<>();
 		Double temp = 0.0;

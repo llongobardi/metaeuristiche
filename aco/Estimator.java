@@ -8,7 +8,7 @@ public class Estimator implements ArcEstimator {
 	private static final double alpha = 1.0;
 	private static final double beta = 2.0;
 	private static final double evaporation_rate = 0.5;
-	private double[][] etha; //nel caso di BPP, etha è il peso dell'oggetto
+	private double[][] etha; //nel caso di BPP, etha ï¿½ il peso dell'oggetto
 	private double contributes[][];
 	private double arcWeight[][];
 	private int spaceSize;
@@ -81,7 +81,7 @@ public class Estimator implements ArcEstimator {
 			//cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
 		}
 		
-		//cost è il numero di bin 
+		//cost ï¿½ il numero di bin 
 		if (cost<bestCost){
 			bestCost=cost;
 			this.bestSolution = solution;
@@ -107,7 +107,7 @@ public class Estimator implements ArcEstimator {
 	}
 
 	@Override
-	public void localUpdateRule(List<Bin> solution) {
+	public void localUpdateRule(AntSolution solution) {
 		
 		int cost = solution.size();
 		

@@ -16,7 +16,7 @@ public interface ArcEstimator{
 	
 	public double[][] getEtha();
 	
-	public void localUpdateRule(List<Bin> solution);
+	public void localUpdateRule(AntSolution solution);
 	
 	public double getContribute(int index1, int index2);
 	
