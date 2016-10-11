@@ -31,7 +31,7 @@ public class Ant extends UntypedActor{
 			} else if (((Message)m).getType().equals(Message.MsgType.STATETRANS)){
 				localSolution.addItem(((Message) m).getState(),
 						InitializeBPP.model.getObjects().get(((Message) m).getState()));
-				if(localSolution.size() == this.spaceSize){
+				if(localSolution.numObjects() == this.spaceSize){
 					Message msg = new Message(Message.MsgType.END);
 					msg.setupSolution(localSolution);
 					graph.tell(msg, getSelf()); //gli invio la mia soluzione

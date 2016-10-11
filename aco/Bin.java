@@ -7,10 +7,15 @@ public class Bin {
 	private HashMap<Integer, Integer> objectsInBin;
 	private int capacityLeft;
 	private final int BIN_CAPACITY = 150;
+	private double[] singlePheromones;
 	
 	public Bin(){
 		objectsInBin = new HashMap<>();
 		this.capacityLeft = BIN_CAPACITY;
+		singlePheromones = new double[InitializeBPP.model.getObjects().size()];
+		for (int i = 0; i<singlePheromones.length; i++){
+			singlePheromones[i] = 1/InitializeBPP.model.getObjects().size();
+		}
 	}
 	
 	public int getLeftCapacity(){
@@ -24,6 +29,10 @@ public class Bin {
 	public void addObject(int num, int volume){
 		objectsInBin.put(num,volume);
 		this.capacityLeft -= volume;
+	}
+	
+	public double[] getSinglePheromones(){
+		return this.singlePheromones;
 	}
 	
 	public Bin copyOf(){

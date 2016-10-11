@@ -1,25 +1,25 @@
 package aco;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Estimator implements ArcEstimator {
 	
-	private static final double alpha = 1.0;
-	private static final double beta = 2.0;
-	private static final double evaporation_rate = 0.5;
-	private int[] etha; //nel caso di BPP, etha è il peso dell'oggetto
+	private final double alpha = 1.0;
+	private final double beta = 2.0;
+	private final double evaporation_rate = 0.5;
+	private final int K = 2;
+	private int[] etha; //nel caso di BPP, etha e' il peso dell'oggetto
 	private double contributes[][];
-	private int spaceSize;
 	private double bestCost;
-	private List<Bin> bestSolution;
+	private int spaceSize;
+	private AntSolution bestSolution;
 	
 	public Estimator(int spaceSize){
 		this.contributes = new double[spaceSize][spaceSize];
 		this.etha = new int[spaceSize];
-		this.spaceSize = spaceSize;
 		this.bestCost = Double.MAX_VALUE;
-		this.bestSolution = new LinkedList<>();
+		this.spaceSize = spaceSize;
+		this.bestSolution = new AntSolution();
 		for(Integer i : InitializeBPP.model.getItemSet())
 			etha[i] = InitializeBPP.model.getObjects().get(i);
 	}
@@ -46,64 +46,67 @@ public class Estimator implements ArcEstimator {
 	public double getContribute(int index1, int index2){ //get tau matrix
 		return this.contributes[index1][index2];
 	}
-
-	/**
-	 * Modifies contributes according to the solution of each single ant.
-	 * */
-	
-	
-	//Equazione (7)
-	/*public void localUpdateRule(List<Integer> solution) {
-		//To calculate the contributes
-		double cost = 0.0;
-		for(int i=0; i<solution.size()-1; i++){
-			//Ant.getNumBin
-			//cost+= arcWeight[solution.get(i)][solution.get(i+1)]; //ottengo il costo della soluzione trovata
-		}
 		
-		//cost � il numero di bin 
-		if (cost<bestCost){
-			bestCost=cost;
-			this.bestSolution = solution;
-		}
-		//Trovato il costo, lo aggiungo alla matrice dei contributi
-		for(int i=0; i<solution.size()-1; i++){
-			contributes[solution.get(i)][solution.get(i+1)]+=1/cost; //regola per TSP
-			//contributes[solution.get(i)][solution.get(i+1)]+=1/numBin
-			}
-		
-	}*/
-	
-	
-	
 	@Override
 	public double getBestSolutionCost(){
 		return this.bestCost;
 	}
 	
 	@Override
-	public List<Bin> getBestSolution(){
+	public AntSolution getBestSolution(){
 		return this.bestSolution;
 	}
+	
+	public int[][] getCouples(){
+		
+		int couples[][] = new int[spaceSize][spaceSize];
+		Arrays.fill(couples, 0);
+		for (Bin b: bestSolution.getBinList()){
+			for (Integer i: b.getObjects().keySet()){
+				for (Integer j: b.getObjects().keySet()){
+					if (!(i.equals(j))){
+						couples[i][j] = 1;
+						couples[j][i] = 1;
+					}
+				}
+			}
+		}
+		
+		return couples;
+	}
 
+	/**
+	 * Called everytime an ant has finished.
+	 * */
 	@Override
 	public void localUpdateRule(AntSolution solution) {
-		/*
-		int cost = solution.size();
 		
-		if (cost<bestCost){
-			bestCost=cost;
+		int cost = 0;
+		
+		int toDivide = 0;
+		int maxContent = solution.getMaxContent();
+		for (Bin b : solution.getBinList()){
+			toDivide+= Math.pow(solution.getObjInBin(b)/maxContent, K);
+		}
+		
+		cost = toDivide/solution.getBinList().size();
+		
+		if (cost < bestCost){
+			bestCost = cost;
 			this.bestSolution = solution;
 		}
 		
-		for(Bin b : solution){
-			for (int i = 0; i< InitializeBPP.model.getObjects().size(); i++){
-				
+		double sum = 0;
+		//update pheromone for single object (equazione 7)
+		for (Bin b: solution.getBinList()){
+			for (int obj : b.getObjects().keySet()){
+				for (int obj1 : b.getObjects().keySet()){
+					sum += contributes[obj][obj1];
 				}
+				(b.getSinglePheromones())[obj] = sum/b.getObjects().size();
 			}
+		}
 		
-		
-		*/
 	}
 
 }

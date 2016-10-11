@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,9 +18,8 @@ public class Main {
 	
 	public static void main(String args[]){
 		
-		
-		
-		BPPopulation pop = new BPPopulation(true);
+	
+	/*	BPPopulation pop = new BPPopulation(true);
 		BPPEstimator estimator = new BPPEstimator();
 		//BPPIndividual ind = new BPPIndividual(estimator);
 		//ind.generateIndividual();
@@ -30,7 +30,7 @@ public class Main {
 			//System.out.println("Generation "+ i +": \n" +  pop.toString());
 		//}
 		
-		System.out.println("Fittest: " +  algo.getFittest().getFitness());	
+		System.out.println("Fittest: " +  algo.getFittest().getFitness());	*/
 	}
 }
 

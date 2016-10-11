@@ -50,16 +50,12 @@ public class AntGraph extends UntypedActor{
 	
 	private void globalUpdateRule(){//aggiornamento della traccia
 		double temp[][] = new double[spaceSize][spaceSize];
-		/*for(int i=0; i<spaceSize; i++){
-			for(int j=0; j<spaceSize; j++){
-				temp[i][j] = estimator.getEvapRate()*pheromone[i][j] + estimator.getContribute(i, j);
-				//equazione (8) per BPP --> equazione (4)
-			}
-		}*/
+
+		int couples[][] = estimator.getCouples();
 		
 		for (int i =0; i<spaceSize; i++){
 			for (int j=0; j<spaceSize; j++){
-				//temp[i][j] =
+				temp[i][j] = estimator.getEvapRate()*pheromone[i][j] +(couples[i][j] == 1 ? 1:0)*estimator.getBestSolutionCost();
 			}
 		}
 		pheromone = temp;	
@@ -72,6 +68,8 @@ public class AntGraph extends UntypedActor{
 		
 		for(Bin b : localSolution.getBinList())
 			visitableNodes.removeAll(b.getObjects().keySet());
+		
+		//TODO per gli oggetti rimasti, devi togliere quelli che non ci stanno
 		
 		/*
 		List<Double> cumulateCostOfNodes = new LinkedList<>();

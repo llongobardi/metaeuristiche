@@ -54,11 +54,32 @@ public class AntSolution {
 	 * @return the size of the solution, calculated as the total items in
 	 * all the bins
 	 */
-	public int size(){
+	public int numObjects(){
 		int size = 0;
 		for(Bin b : solution)
 			size += b.getObjects().size();
 		return size;
+	}
+	
+	public int numBins(){
+		return solution.size();
+	}
+	
+	public int getMaxContent(){
+		int max = 0;
+		int temp = 0;
+		for (Bin b : solution){
+			temp = 0;
+			temp = b.getObjects().size();
+			if (temp>max){
+				max = temp;
+			}
+		}
+		return max;		
+	}
+	
+	public int getObjInBin(Bin b){
+		return b.getObjects().size();
 	}
 	
 	/**
