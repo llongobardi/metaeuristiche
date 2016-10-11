@@ -60,5 +60,16 @@ public class AntSolution {
 			size += b.getObjects().size();
 		return size;
 	}
+	
+	/**
+	 * 
+	 * @return a copy of bin list (it is safe to work with)
+	 */
+	public List<Bin> getBinList(){
+		LinkedList<Bin> l = new LinkedList<>();
+		for(Bin b : solution)
+			l.add(b.copyOf());
+		return l;
+	}
 
 }

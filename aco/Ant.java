@@ -1,8 +1,5 @@
 package aco;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 
@@ -32,12 +29,12 @@ public class Ant extends UntypedActor{
 				msg.setupStateRequest(localSolution);
 				graph.tell(msg,this.getSelf());
 			} else if (((Message)m).getType().equals(Message.MsgType.STATETRANS)){
-				localSolution.addItem(((Message) m).getState(), InitializeBPP.model.getObjects().get(((Message) m).getState()));
+				localSolution.addItem(((Message) m).getState(),
+						InitializeBPP.model.getObjects().get(((Message) m).getState()));
 				if(localSolution.size() == this.spaceSize){
 					Message msg = new Message(Message.MsgType.END);
 					msg.setupSolution(localSolution);
 					graph.tell(msg, getSelf()); //gli invio la mia soluzione
-					//graph.tell(new Message(Message.MsgType.END), getSelf());
 				} else {
 					Message msg = new Message(Message.MsgType.STATETRANS);
 					msg.setupStateRequest(localSolution);

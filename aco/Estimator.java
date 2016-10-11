@@ -8,30 +8,20 @@ public class Estimator implements ArcEstimator {
 	private static final double alpha = 1.0;
 	private static final double beta = 2.0;
 	private static final double evaporation_rate = 0.5;
-	private double[][] etha; //nel caso di BPP, etha � il peso dell'oggetto
+	private int[] etha; //nel caso di BPP, etha è il peso dell'oggetto
 	private double contributes[][];
-	private double arcWeight[][];
 	private int spaceSize;
 	private double bestCost;
 	private List<Bin> bestSolution;
 	
-	public Estimator(double[][] arcWeight, int spaceSize){
-		this.arcWeight = arcWeight;
+	public Estimator(int spaceSize){
 		this.contributes = new double[spaceSize][spaceSize];
-		this.etha = new double[spaceSize][spaceSize];
+		this.etha = new int[spaceSize];
 		this.spaceSize = spaceSize;
 		this.bestCost = Double.MAX_VALUE;
 		this.bestSolution = new LinkedList<>();
-		for (int i = 0; i<spaceSize; i++){
-			for (int j =0; j<spaceSize; j++){
-				if(i!=j){
-					etha[i][j] = 1/arcWeight[i][j];
-				} else {
-					etha[i][j] = 0;
-				}
-				 
-			}
-		}
+		for(Integer i : InitializeBPP.model.getItemSet())
+			etha[i] = InitializeBPP.model.getObjects().get(i);
 	}
 
 	@Override
@@ -49,17 +39,7 @@ public class Estimator implements ArcEstimator {
 		return evaporation_rate;
 	}
 	
-	public double getArcWeight(int index1, int index2){
-		return this.arcWeight[index1][index2];
-	}
-	
-	@Override
-	public double[] getLineWeight(int index){
-		return this.arcWeight[index];
-	}
-
-	
-	public double[][] getEtha() {
+	public int[] getEtha() {
 		return etha;
 	}
 	
@@ -108,7 +88,7 @@ public class Estimator implements ArcEstimator {
 
 	@Override
 	public void localUpdateRule(AntSolution solution) {
-		
+		/*
 		int cost = solution.size();
 		
 		if (cost<bestCost){
@@ -123,7 +103,7 @@ public class Estimator implements ArcEstimator {
 			}
 		
 		
-		
+		*/
 	}
 
 }

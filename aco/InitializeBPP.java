@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class InitializeBPP {
 	
@@ -43,6 +45,17 @@ public class InitializeBPP {
 	
 	public int getBestSolution(){
 		return nBinBestSol;
+	}
+	
+	public List<Integer> getItemSet(){
+		
+		List<Integer> result = new LinkedList<>();
+		
+		
+		for(Integer i : objects.keySet())
+			result.add(new Integer(i));
+		
+		return result;
 	}
 
 }

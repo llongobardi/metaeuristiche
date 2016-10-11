@@ -13,7 +13,7 @@ public class AntGraph extends UntypedActor{
 	
 	private ArcEstimator estimator;
 	private double pheromone[][];
-	private double etha[][];
+	private int etha[];
 	private int antEnded;
 	private int spaceSize;
 	
@@ -32,7 +32,7 @@ public class AntGraph extends UntypedActor{
 		if(m instanceof Message){
 			if (((Message) m).getType().equals(Message.MsgType.STATETRANS)){
 				AntSolution sol = ((Message) m).getLocalSolution();
-				int state = this.stateTransitionRule(((Message) m).getState(), sol);
+				int state = this.stateTransitionRule(sol);
 				Message msg = new Message(Message.MsgType.STATETRANS);
 				msg.setState(state);
 				getSender().tell(msg, getSelf());
@@ -66,18 +66,14 @@ public class AntGraph extends UntypedActor{
 	}
 	
 	//equazione (6) per BPP
-	public int stateTransitionRule(int index, AntSolution localSolution) {
+	public int stateTransitionRule(AntSolution localSolution) {
 		
-		List<Integer> visitableNodes = new LinkedList<>();
-		double[] nodes = estimator.getLineWeight(index); //prendo i pesi per quello specifico indice 
-		for(int i = 0; i < nodes.length; i++){
-			if(nodes[i] != 0)
-				visitableNodes.add(i);
-		}
+		List<Integer> visitableNodes = new LinkedList<>(InitializeBPP.model.getItemSet());
 		
-		//remove visited nodes
-		visitableNodes.removeAll(localSolution);//tra i possibili nodi tolgo quelli gi� visitati
+		for(Bin b : localSolution.getBinList())
+			visitableNodes.removeAll(b.getObjects().keySet());
 		
+		/*
 		List<Double> cumulateCostOfNodes = new LinkedList<>();
 		Double temp = 0.0;
 		
@@ -96,7 +92,7 @@ public class AntGraph extends UntypedActor{
 			}
 		}
 		
-		
+		*/
 		return -1;
 	}
 }

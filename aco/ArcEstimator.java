@@ -10,11 +10,7 @@ public interface ArcEstimator{
 	
 	public double getEvapRate();
 	
-	//public double getEtha(int x_coord, int y_coord );
-	
-	public double[] getLineWeight(int index);
-	
-	public double[][] getEtha();
+	public int[] getEtha();
 	
 	public void localUpdateRule(AntSolution solution);
 	

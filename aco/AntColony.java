@@ -11,24 +11,24 @@ import akka.actor.UntypedActor;
 
 public class AntColony extends UntypedActor {
 
+	private final int ANTS = 40;
 	private ActorRef graph;
-	private int numIter,maxIter,spaceSize;
+	private int numIter,maxIter;
 	List<ActorRef> ants;
 	ArcEstimator estimator;
 	
 	public AntColony(int spaceSize, int iterations, double [][] weightInstance, ArcEstimator estimator){
 		
 		this.estimator = estimator;
-		this.spaceSize = spaceSize;
 		this.maxIter = iterations;
 		numIter = 0;
 		ActorSystem system = ActorSystem.create();
 		
-		ants = new ArrayList<>(spaceSize);
+		ants = new ArrayList<>(ANTS);
 		
 		graph = system.actorOf(Props.create(AntGraph.class, estimator ,spaceSize,this.getSelf()));
 		
-		for(int i = 0; i < spaceSize; i++)
+		for(int i = 0; i < ANTS; i++)
 			ants.add(system.actorOf(Props.create(Ant.class,0,spaceSize,graph)));
 		
 		/*Iterator<ActorRef> iterator = ants.iterator();
