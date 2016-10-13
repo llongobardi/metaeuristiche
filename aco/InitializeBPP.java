@@ -36,6 +36,7 @@ public class InitializeBPP {
 	}
 	
 	public HashMap <Integer,Integer> getObjects(){
+		//System.out.println(objects.toString());
 		return objects;
 	}
 	

@@ -13,24 +13,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import genetic.*;
+import aco.*;
+import aco.Estimator;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 
 public class Main {
 	
 	public static void main(String args[]){
 		
 	
-	/*	BPPopulation pop = new BPPopulation(true);
-		BPPEstimator estimator = new BPPEstimator();
-		//BPPIndividual ind = new BPPIndividual(estimator);
-		//ind.generateIndividual();
-		BPPAlgorithm algo = new BPPAlgorithm(pop.getIndividual(0));
+		ArcEstimator est = new Estimator(120);
+		ActorRef colony;// = new AntColony(spaceSize,100,weights,est);
+		ActorSystem system = ActorSystem.create("BPP");
+		colony = system.actorOf(Props.create(AntColony.class,120,10,est));
+		colony.tell(new Message(Message.MsgType.START),ActorRef.noSender());
 		
-		//for(int i = 0; i< 1; i++){
-			pop = algo.evolvePopulation(pop);			
-			//System.out.println("Generation "+ i +": \n" +  pop.toString());
-		//}
-		
-		System.out.println("Fittest: " +  algo.getFittest().getFitness());	*/
 	}
 }
 

@@ -17,7 +17,7 @@ public class AntColony extends UntypedActor {
 	List<ActorRef> ants;
 	ArcEstimator estimator;
 	
-	public AntColony(int spaceSize, int iterations, double [][] weightInstance, ArcEstimator estimator){
+	public AntColony(int spaceSize, int iterations, ArcEstimator estimator){
 		
 		this.estimator = estimator;
 		this.maxIter = iterations;
@@ -31,11 +31,11 @@ public class AntColony extends UntypedActor {
 		for(int i = 0; i < ANTS; i++)
 			ants.add(system.actorOf(Props.create(Ant.class,0,spaceSize,graph)));
 		
-		/*Iterator<ActorRef> iterator = ants.iterator();
+		Iterator<ActorRef> iterator = ants.iterator();
 		
 		while(iterator.hasNext()){
 			iterator.next().tell(new Message(Message.MsgType.GO), this.getSelf());
-		}*/
+		}
 	}
 	
 	

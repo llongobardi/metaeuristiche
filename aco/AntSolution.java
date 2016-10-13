@@ -49,6 +49,10 @@ public class AntSolution {
 		this.solution.clear();
 	}
 	
+	public Bin getLastBin(){
+		return this.solution.get(solution.size()-1);
+	}
+	
 	/**
 	 * 
 	 * @return the size of the solution, calculated as the total items in

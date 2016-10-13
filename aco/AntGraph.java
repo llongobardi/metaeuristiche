@@ -33,6 +33,7 @@ public class AntGraph extends UntypedActor{
 			if (((Message) m).getType().equals(Message.MsgType.STATETRANS)){
 				AntSolution sol = ((Message) m).getLocalSolution();
 				int state = this.stateTransitionRule(sol);
+				System.out.println(sol.numObjects());
 				Message msg = new Message(Message.MsgType.STATETRANS);
 				msg.setState(state);
 				getSender().tell(msg, getSelf());
@@ -48,6 +49,7 @@ public class AntGraph extends UntypedActor{
 		}
 	}
 	
+	//Equazione (8)
 	private void globalUpdateRule(){//aggiornamento della traccia
 		double temp[][] = new double[spaceSize][spaceSize];
 
@@ -64,33 +66,47 @@ public class AntGraph extends UntypedActor{
 	//equazione (6) per BPP
 	public int stateTransitionRule(AntSolution localSolution) {
 		
+		//lista di oggetti da poter inserire - before size checking
 		List<Integer> visitableNodes = new LinkedList<>(InitializeBPP.model.getItemSet());
+		//lightEnough is the set of items that qualifies for inclusion
+		List<Integer> lightEnough = new LinkedList<>();
 		
 		for(Bin b : localSolution.getBinList())
 			visitableNodes.removeAll(b.getObjects().keySet());
 		
-		//TODO per gli oggetti rimasti, devi togliere quelli che non ci stanno
+		//per gli oggetti rimasti, devi togliere quelli che non ci stanno
+		Bin lastBin = localSolution.getLastBin();
+		int leftCapacity = lastBin.getLeftCapacity();
 		
-		/*
-		List<Double> cumulateCostOfNodes = new LinkedList<>();
-		Double temp = 0.0;
-		
-		for(Integer i : visitableNodes){
-			cumulateCostOfNodes.add(Math.pow(nodes[i], estimator.getAlpha())*
-					Math.pow(etha[index][i], estimator.getBeta())+temp);
-			temp += Math.pow(nodes[i], estimator.getAlpha()) * Math.pow(etha[index][i], estimator.getBeta());
+		for (int i: visitableNodes){
+			if (InitializeBPP.model.getObjects().get(i) <= leftCapacity){
+				lightEnough.add(i); //aggiungo la chiave dell'oggetto abbastanza leggero
+				//leftCapacity -= InitializeBPP.model.getObjects().get(i);//diminuisco la capacità del bin
+			}
 		}
+		
+				
+		List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilità di includere un oggetto
+		double sumDivide = 0;
+		
+		//calculating sumDivide
+		for (int i: lightEnough){
+			sumDivide += lastBin.getSinglePheromones()[i] * Math.pow(this.etha[i], estimator.getBeta());
+		}
+		
+		for (int i : lightEnough){
+			cumulateCostOfNodes.add(i, lastBin.getSinglePheromones()[i]*Math.pow(this.etha[i], estimator.getBeta())/sumDivide);
+		}
+		
 		
 		Random r = new Random();
 		double choice = r.nextDouble();
 		//montecarlo 
 		for(int i = 0; i < cumulateCostOfNodes.size(); i++){
-			if(choice <= cumulateCostOfNodes.get(i)/temp){
-				return visitableNodes.get(i);//ritorno il prossimo stato
+			if(choice <= cumulateCostOfNodes.get(i)){
+				return lightEnough.get(i);//ritorno il prossimo oggetto da aggiungere
 			}
 		}
-		
-		*/
 		return -1;
 	}
 }
