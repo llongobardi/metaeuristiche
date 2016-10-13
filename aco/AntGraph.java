@@ -33,7 +33,6 @@ public class AntGraph extends UntypedActor{
 			if (((Message) m).getType().equals(Message.MsgType.STATETRANS)){
 				AntSolution sol = ((Message) m).getLocalSolution();
 				int state = this.stateTransitionRule(sol);
-				System.out.println(sol.numObjects());
 				Message msg = new Message(Message.MsgType.STATETRANS);
 				msg.setState(state);
 				getSender().tell(msg, getSelf());
@@ -85,28 +84,61 @@ public class AntGraph extends UntypedActor{
 			}
 		}
 		
-				
-		List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilità di includere un oggetto
-		double sumDivide = 0;
-		
-		//calculating sumDivide
-		for (int i: lightEnough){
-			sumDivide += lastBin.getSinglePheromones()[i] * Math.pow(this.etha[i], estimator.getBeta());
-		}
-		
-		for (int i : lightEnough){
-			cumulateCostOfNodes.add(i, lastBin.getSinglePheromones()[i]*Math.pow(this.etha[i], estimator.getBeta())/sumDivide);
-		}
-		
-		
-		Random r = new Random();
-		double choice = r.nextDouble();
-		//montecarlo 
-		for(int i = 0; i < cumulateCostOfNodes.size(); i++){
-			if(choice <= cumulateCostOfNodes.get(i)){
-				return lightEnough.get(i);//ritorno il prossimo oggetto da aggiungere
+		if(!lightEnough.isEmpty()){
+			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilità di includere un oggetto
+			double sumDivide = 0;
+			double cumulate = 0;
+			
+			
+			//calculating sumDivide
+			for (int i: lightEnough){
+				sumDivide += lastBin.getSinglePheromones()[i] * Math.pow(this.etha[i], estimator.getBeta());
 			}
+			
+			for (int i : lightEnough){
+				cumulateCostOfNodes.add(lastBin.getSinglePheromones()[i]*Math.pow(this.etha[i], estimator.getBeta())/sumDivide +cumulate);
+				cumulate+=lastBin.getSinglePheromones()[i]*Math.pow(this.etha[i], estimator.getBeta())/sumDivide;
+			}
+			
+			
+			Random r = new Random();
+			double choice = r.nextDouble();
+			//montecarlo 
+			for(int i = 0; i < cumulateCostOfNodes.size(); i++){
+				if(choice <= cumulateCostOfNodes.get(i)/cumulate){
+					return lightEnough.get(i);//ritorno il prossimo oggetto da aggiungere
+				}
+			}
+			
+		} else {
+			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilità di includere un oggetto
+			double sumDivide = 0;
+			double cumulate = 0;
+			
+			
+			//calculating sumDivide
+			for (int i: visitableNodes){
+				sumDivide += lastBin.getSinglePheromones()[i] * Math.pow(this.etha[i], estimator.getBeta());
+			}
+			
+			for (int i : visitableNodes){
+				cumulateCostOfNodes.add(lastBin.getSinglePheromones()[i]*Math.pow(this.etha[i], estimator.getBeta())/sumDivide +cumulate);
+				cumulate+=lastBin.getSinglePheromones()[i]*Math.pow(this.etha[i], estimator.getBeta())/sumDivide;
+			}
+			
+			
+			Random r = new Random();
+			double choice = r.nextDouble();
+			//montecarlo 
+			for(int i = 0; i < cumulateCostOfNodes.size(); i++){
+				if(choice <= cumulateCostOfNodes.get(i)/cumulate){
+					return visitableNodes.get(i);//ritorno il prossimo oggetto da aggiungere
+				}
+			}
+
+			
 		}
+		
 		return -1;
 	}
 }

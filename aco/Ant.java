@@ -31,6 +31,7 @@ public class Ant extends UntypedActor{
 			} else if (((Message)m).getType().equals(Message.MsgType.STATETRANS)){
 				localSolution.addItem(((Message) m).getState(),
 						InitializeBPP.model.getObjects().get(((Message) m).getState()));
+				System.out.println("Numero di oggetti nella soluzione: "+localSolution.numObjects());
 				if(localSolution.numObjects() == this.spaceSize){
 					Message msg = new Message(Message.MsgType.END);
 					msg.setupSolution(localSolution);

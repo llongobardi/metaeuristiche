@@ -70,8 +70,7 @@ public class Estimator implements ArcEstimator {
 					}
 				}
 			}
-		}
-		
+		}		
 		return couples;
 	}
 

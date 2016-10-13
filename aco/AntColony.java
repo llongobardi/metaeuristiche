@@ -11,7 +11,7 @@ import akka.actor.UntypedActor;
 
 public class AntColony extends UntypedActor {
 
-	private final int ANTS = 40;
+	private final int ANTS = 1;
 	private ActorRef graph;
 	private int numIter,maxIter;
 	List<ActorRef> ants;
@@ -31,11 +31,11 @@ public class AntColony extends UntypedActor {
 		for(int i = 0; i < ANTS; i++)
 			ants.add(system.actorOf(Props.create(Ant.class,0,spaceSize,graph)));
 		
-		Iterator<ActorRef> iterator = ants.iterator();
+		/*Iterator<ActorRef> iterator = ants.iterator();
 		
 		while(iterator.hasNext()){
 			iterator.next().tell(new Message(Message.MsgType.GO), this.getSelf());
-		}
+		}*/
 	}
 	
 	
