@@ -27,7 +27,7 @@ public class Main {
 		ArcEstimator est = new Estimator(120);
 		ActorRef colony;// = new AntColony(spaceSize,100,weights,est);
 		ActorSystem system = ActorSystem.create("BPP");
-		colony = system.actorOf(Props.create(AntColony.class,120,1,est));
+		colony = system.actorOf(Props.create(AntColony.class,120,10,est));
 		colony.tell(new Message(Message.MsgType.START),ActorRef.noSender());
 		
 	}

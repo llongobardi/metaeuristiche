@@ -39,7 +39,7 @@ public class AntGraph extends UntypedActor{
 			} else if (((Message) m).getType().equals(Message.MsgType.END)){
 				antEnded++;
 				estimator.localUpdateRule(((Message) m).getLocalSolution());//modifico i contributi
-				if (antEnded == spaceSize){ //spaceSize � anche il numero di formiche
+				if (antEnded == 1/*spaceSize*/){ //spaceSize � anche il numero di formiche
 					antEnded=0;
 					this.globalUpdateRule();//update del feromone
 					colony.tell(new Message(Message.MsgType.END), getSelf());

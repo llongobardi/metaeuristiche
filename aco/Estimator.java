@@ -10,14 +10,14 @@ public class Estimator implements ArcEstimator {
 	private final int K = 2;
 	private int[] etha; //nel caso di BPP, etha e' il peso dell'oggetto
 	private double contributes[][];
-	private double bestCost;
+	private int bestCost;
 	private int spaceSize;
 	private AntSolution bestSolution;
 	
 	public Estimator(int spaceSize){
 		this.contributes = new double[spaceSize][spaceSize];
 		this.etha = new int[spaceSize];
-		this.bestCost = Double.MAX_VALUE;
+		this.bestCost = Integer.MAX_VALUE;
 		this.spaceSize = spaceSize;
 		this.bestSolution = new AntSolution();
 		for(Integer i : InitializeBPP.model.getItemSet())
@@ -48,7 +48,7 @@ public class Estimator implements ArcEstimator {
 	}
 		
 	@Override
-	public double getBestSolutionCost(){
+	public int getBestSolutionCost(){
 		return this.bestCost;
 	}
 	
@@ -60,7 +60,7 @@ public class Estimator implements ArcEstimator {
 	public int[][] getCouples(){
 		
 		int couples[][] = new int[spaceSize][spaceSize];
-		Arrays.fill(couples, 0);
+		//Arrays.fill(couples, 0);
 		for (Bin b: bestSolution.getBinList()){
 			for (Integer i: b.getObjects().keySet()){
 				for (Integer j: b.getObjects().keySet()){

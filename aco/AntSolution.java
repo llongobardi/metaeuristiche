@@ -29,8 +29,9 @@ public class AntSolution {
 			
 			if(solution.get(solution.size()-1).getLeftCapacity() < value){
 				Bin b = new Bin();
-				System.out.println("Ho aggiunto un nuovo bin");
+				//System.out.println("Ho aggiunto un nuovo bin");
 				b.addObject(id, value);
+				solution.add(b);
 			} else {
 				solution.get(solution.size()-1).addObject(id, value);			
 			}

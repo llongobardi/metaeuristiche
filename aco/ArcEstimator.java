@@ -16,7 +16,7 @@ public interface ArcEstimator{
 	
 	public double getContribute(int index1, int index2);
 	
-	public double getBestSolutionCost();
+	public int getBestSolutionCost();
 	
 	public AntSolution getBestSolution();
 
