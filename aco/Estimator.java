@@ -1,6 +1,5 @@
 package aco;
 
-import java.util.Arrays;
 
 public class Estimator implements ArcEstimator {
 	

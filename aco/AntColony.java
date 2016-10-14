@@ -11,7 +11,7 @@ import akka.actor.UntypedActor;
 
 public class AntColony extends UntypedActor {
 
-	private final int ANTS = 2;
+	private final int ANTS = 40;
 	private ActorRef graph;
 	private int numIter,maxIter;
 	List<ActorRef> ants;
@@ -26,7 +26,7 @@ public class AntColony extends UntypedActor {
 		
 		ants = new ArrayList<>(ANTS);
 		
-		graph = system.actorOf(Props.create(AntGraph.class, estimator ,spaceSize,this.getSelf()));
+		graph = system.actorOf(Props.create(AntGraph.class, estimator ,spaceSize,this.getSelf(),this.ANTS));
 		
 		for(int i = 0; i < ANTS; i++)
 			ants.add(system.actorOf(Props.create(Ant.class,0,spaceSize,graph)));
@@ -38,6 +38,9 @@ public class AntColony extends UntypedActor {
 		}*/
 	}
 	
+	public int getNumAnts(){
+		return this.ANTS;
+	}
 	
 	public void startAnts(){
 		
@@ -56,7 +59,7 @@ public class AntColony extends UntypedActor {
 				if (numIter<maxIter){
 					startAnts();
 				} else {
-					System.out.print("Sol migliore: "+estimator.getBestSolution().toString() + "Costo sol: " + estimator.getBestSolution().numBins());
+					System.out.print("Costo soluzione migliore (in numero di bin): " + estimator.getBestSolution().numBins());
 				}
 			} else if (((Message) m).getType().equals(Message.MsgType.START)){
 				startAnts();
