@@ -80,12 +80,12 @@ public class AntGraph extends UntypedActor{
 		for (int i: visitableNodes){
 			if (InitializeBPP.model.getObjects().get(i) <= leftCapacity){
 				lightEnough.add(i); //aggiungo la chiave dell'oggetto abbastanza leggero
-				//leftCapacity -= InitializeBPP.model.getObjects().get(i);//diminuisco la capacità del bin
+				//leftCapacity -= InitializeBPP.model.getObjects().get(i);//diminuisco la capacitï¿½ del bin
 			}
 		}
 		
 		if(!lightEnough.isEmpty()){
-			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilità di includere un oggetto
+			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilitï¿½ di includere un oggetto
 			double sumDivide = 0;
 			double cumulate = 0;
 			
@@ -111,7 +111,7 @@ public class AntGraph extends UntypedActor{
 			}
 			
 		} else {
-			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilità di includere un oggetto
+			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilitï¿½ di includere un oggetto
 			double sumDivide = 0;
 			double cumulate = 0;
 			
