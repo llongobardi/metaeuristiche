@@ -16,14 +16,15 @@ public class AntGraph extends UntypedActor{
 	private int etha[];
 	private int antEnded;
 	private int spaceSize;
+	private int numAnts;
 	
-	
-	public AntGraph(ArcEstimator estimator,int spaceSize, ActorRef colony){
+	public AntGraph(ArcEstimator estimator,int spaceSize, ActorRef colony, int numAnts){
 		this.estimator = estimator;
 		this.colony = colony;
 		pheromone = new double[spaceSize][spaceSize];
 		this.etha = estimator.getEtha();
 		antEnded = 0;
+		this.numAnts = numAnts;
 		this.spaceSize = spaceSize;
 	}
 
@@ -39,7 +40,7 @@ public class AntGraph extends UntypedActor{
 			} else if (((Message) m).getType().equals(Message.MsgType.END)){
 				antEnded++;
 				estimator.localUpdateRule(((Message) m).getLocalSolution());//modifico i contributi
-				if (antEnded == 1/*spaceSize*/){ //spaceSize � anche il numero di formiche
+				if (antEnded == this.numAnts){ //spaceSize � anche il numero di formiche
 					antEnded=0;
 					this.globalUpdateRule();//update del feromone
 					colony.tell(new Message(Message.MsgType.END), getSelf());
