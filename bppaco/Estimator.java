@@ -1,5 +1,6 @@
 package bppaco;
 
+import akka.actor.ActorRef;
 
 public class Estimator implements ArcEstimator {
 	
@@ -12,8 +13,11 @@ public class Estimator implements ArcEstimator {
 	private int bestCost;
 	private int spaceSize;
 	private AntSolution bestSolution;
+	private ActorRef graph;
 	
 	public Estimator(int spaceSize){
+		
+		//this.graph = graph;
 		this.contributes = new double[spaceSize][spaceSize];
 		this.etha = new int[spaceSize];
 		this.bestCost = Integer.MAX_VALUE;
@@ -89,11 +93,10 @@ public class Estimator implements ArcEstimator {
 		
 		fitness = toDivide/solution.getBinList().size();
 		
-		if (fitness > bestCost){
+		if (fitness < bestCost){
 			bestCost = fitness;
 			this.bestSolution = solution;
 		}
-		
 		double sum = 0;
 		//update pheromone for single object (equazione 7)
 		for (Bin b: solution.getBinList()){
@@ -105,6 +108,10 @@ public class Estimator implements ArcEstimator {
 			}
 		}
 		
+	}
+	
+	public void setPheromones(double pher[][]){
+		this.contributes =pher;
 	}
 
 }

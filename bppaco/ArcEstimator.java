@@ -19,5 +19,7 @@ public interface ArcEstimator{
 	public int getBestSolutionCost();
 	
 	public AntSolution getBestSolution();
+	
+	public void setPheromones(double pher[][]);
 
 }

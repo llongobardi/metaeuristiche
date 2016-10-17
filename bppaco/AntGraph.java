@@ -31,6 +31,7 @@ public class AntGraph extends UntypedActor{
 				this.pheromone[i][j] = 0;
 			}
 		}
+		this.estimator.setPheromones(pheromone);
 	}
 
 	@Override
@@ -66,12 +67,9 @@ public class AntGraph extends UntypedActor{
 			}
 		}
 		pheromone = temp;	
+		this.estimator.setPheromones(pheromone);
 	}
 	
-	public double[][] getPheromones(){
-		return this.pheromone;
-		
-	}
 	
 	//equazione (6) per BPP
 	public int stateTransitionRule(AntSolution localSolution) {
