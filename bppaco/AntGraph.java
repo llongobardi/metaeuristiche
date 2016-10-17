@@ -21,11 +21,16 @@ public class AntGraph extends UntypedActor{
 	public AntGraph(ArcEstimator estimator,int spaceSize, ActorRef colony, int numAnts){
 		this.estimator = estimator;
 		this.colony = colony;
-		pheromone = new double[spaceSize][spaceSize];
 		this.etha = estimator.getEtha();
 		antEnded = 0;
 		this.numAnts = numAnts;
 		this.spaceSize = spaceSize;
+		this.pheromone = new double[spaceSize][spaceSize];
+		for (int i=0; i<spaceSize; i++){
+			for (int j =0; j<spaceSize; j++){
+				this.pheromone[i][j] = 0;
+			}
+		}
 	}
 
 	@Override
@@ -63,6 +68,11 @@ public class AntGraph extends UntypedActor{
 		pheromone = temp;	
 	}
 	
+	public double[][] getPheromones(){
+		return this.pheromone;
+		
+	}
+	
 	//equazione (6) per BPP
 	public int stateTransitionRule(AntSolution localSolution) {
 		
@@ -70,6 +80,7 @@ public class AntGraph extends UntypedActor{
 		List<Integer> visitableNodes = new LinkedList<>(InitializeBPP.model.getItemSet());
 		//lightEnough is the set of items that qualifies for inclusion
 		List<Integer> lightEnough = new LinkedList<>();
+		
 		
 		for(Bin b : localSolution.getBinList())
 			visitableNodes.removeAll(b.getObjects().keySet());

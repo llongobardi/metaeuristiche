@@ -20,6 +20,11 @@ public class Main {
 		colony = system.actorOf(Props.create(AntColony.class,120,100,est));
 		colony.tell(new Message(Message.MsgType.START),ActorRef.noSender());
 	
+		/*
+		 * TODO
+		 * - Creare estimator dentro la colony, a cui passare il riferimento al grafo; l'estimator prende i contributi dal grafo
+		 * - Il feromone viene modificato dalla globalupdaterule in antgraph!!!
+		 * */
 		//ind.setObjects(InitializeBPP.model.getObjects());
 		//ind.generateIndividual();
 		

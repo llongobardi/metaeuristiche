@@ -29,7 +29,7 @@ public class AntColony extends UntypedActor {
 		graph = system.actorOf(Props.create(AntGraph.class, estimator ,spaceSize,this.getSelf(),this.ANTS));
 		
 		for(int i = 0; i < ANTS; i++)
-			ants.add(system.actorOf(Props.create(Ant.class,0,spaceSize,graph)));
+			ants.add(system.actorOf(Props.create(Ant.class,spaceSize,graph)));
 		
 		/*Iterator<ActorRef> iterator = ants.iterator();
 		

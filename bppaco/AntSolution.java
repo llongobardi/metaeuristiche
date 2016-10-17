@@ -15,6 +15,7 @@ public class AntSolution {
 	
 	public AntSolution(){
 		solution = new LinkedList<>();
+		solution.add(new Bin());
 	}
 	
 	/**
@@ -49,6 +50,7 @@ public class AntSolution {
 	 */
 	public void clear(){
 		this.solution.clear();
+		this.solution.add(new Bin());
 	}
 	
 	public Bin getLastBin(){

@@ -79,7 +79,7 @@ public class Estimator implements ArcEstimator {
 	@Override
 	public void localUpdateRule(AntSolution solution) {
 		
-		int cost = 0;
+		int fitness = 0;
 		
 		int toDivide = 0;
 		int maxContent = solution.getMaxContent();
@@ -87,10 +87,10 @@ public class Estimator implements ArcEstimator {
 			toDivide+= Math.pow(solution.getObjInBin(b)/maxContent, K);
 		}
 		
-		cost = toDivide/solution.getBinList().size();
+		fitness = toDivide/solution.getBinList().size();
 		
-		if (cost < bestCost){
-			bestCost = cost;
+		if (fitness > bestCost){
+			bestCost = fitness;
 			this.bestSolution = solution;
 		}
 		
