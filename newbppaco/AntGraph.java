@@ -1,4 +1,4 @@
-package bppaco;
+package newbppaco;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.Random;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 
-public class AntGraph extends UntypedActor{
+public class AntGraph{
 	
-	private ActorRef colony;
+	private AntColony colony;
 	
 	private ArcEstimator estimator;
 	private double pheromone[][];
@@ -18,7 +18,7 @@ public class AntGraph extends UntypedActor{
 	private int spaceSize;
 	private int numAnts;
 	
-	public AntGraph(ArcEstimator estimator,int spaceSize, ActorRef colony, int numAnts){
+	public AntGraph(ArcEstimator estimator,int spaceSize, AntColony colony, int numAnts){
 		this.estimator = estimator;
 		this.colony = colony;
 		this.etha = estimator.getEtha();
@@ -34,7 +34,7 @@ public class AntGraph extends UntypedActor{
 		this.estimator.setPheromones(pheromone);
 	}
 
-	@Override
+	/*@Override
 	public void onReceive(Object m) throws Throwable {
 		if(m instanceof Message){
 			if (((Message) m).getType().equals(Message.MsgType.STATETRANS)){
@@ -46,6 +46,7 @@ public class AntGraph extends UntypedActor{
 			} else if (((Message) m).getType().equals(Message.MsgType.END)){
 				antEnded++;
 				estimator.localUpdateRule(((Message) m).getLocalSolution());//modifico i contributi
+				System.out.println("Finita iterazione num bin " + ((Message) m).getLocalSolution().numBins());
 				if (antEnded == this.numAnts){ //spaceSize � anche il numero di formiche
 					antEnded=0;
 					this.globalUpdateRule();//update del feromone
@@ -53,7 +54,7 @@ public class AntGraph extends UntypedActor{
 				}
 			}
 		}
-	}
+	}*/
 	
 	//Equazione (8)
 	private void globalUpdateRule(){//aggiornamento della traccia
@@ -72,7 +73,7 @@ public class AntGraph extends UntypedActor{
 	
 	
 	//equazione (6) per BPP
-	public int stateTransitionRule(AntSolution localSolution) {
+	public synchronized int stateTransitionRule(AntSolution localSolution) {
 		
 		//lista di oggetti da poter inserire - before size checking
 		List<Integer> visitableNodes = new LinkedList<>(InitializeBPP.model.getItemSet());
@@ -121,7 +122,8 @@ public class AntGraph extends UntypedActor{
 			}
 			
 		} else {
-
+			
+			//TODO modificare : getSinglePheromones del lastbin è sbagliato! La probabilità è uguale per tutti.
 			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilit� di includere un oggetto
 			double sumDivide = 0;
 			double cumulate = 0;

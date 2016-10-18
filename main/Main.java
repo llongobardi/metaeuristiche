@@ -1,7 +1,6 @@
 package main;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import akka.actor.ActorRef;
@@ -16,20 +15,14 @@ public class Main {
 	
 		ArcEstimator est = new Estimator(120);
 		ActorRef colony;
+		ActorRef graph;
+		List<ActorRef>  ants = new ArrayList<>(40);
 		ActorSystem system = ActorSystem.create("BPP");
-		colony = system.actorOf(Props.create(AntColony.class,120,100,est));
+		colony = system.actorOf(Props.create(AntColony.class,120,100,est,ants));
+		graph = system.actorOf(Props.create(AntGraph.class, est ,120,colony,40));
+		for(int i = 0; i < 40; i++)
+			ants.add(system.actorOf(Props.create(Ant.class,120,graph)));
 		colony.tell(new Message(Message.MsgType.START),ActorRef.noSender());
-	
-		/*
-		 * TODO
-		 * - Creare estimator dentro la colony, a cui passare il riferimento al grafo; l'estimator prende i contributi dal grafo
-		 * - Il feromone viene modificato dalla globalupdaterule in antgraph!!!
-		 * */
-		//ind.setObjects(InitializeBPP.model.getObjects());
-		//ind.generateIndividual();
-		
-		//pop.insertIndividual(0, ind);
-		
 		
 		
 	}

@@ -1,4 +1,6 @@
-package bppaco;
+package newbppaco;
+
+import akka.actor.ActorRef;
 
 public class Estimator implements ArcEstimator {
 	
@@ -11,11 +13,13 @@ public class Estimator implements ArcEstimator {
 	private double bestCost;
 	private int spaceSize;
 	private AntSolution bestSolution;
+	private ActorRef graph;
 	private int numBinBestSol;
 	
 	public Estimator(int spaceSize){
 		
 		this.numBinBestSol = 100;
+		//this.graph = graph;
 		this.contributes = new double[spaceSize][spaceSize];
 		this.etha = new int[spaceSize];
 		this.bestCost = 0.0;
@@ -85,7 +89,7 @@ public class Estimator implements ArcEstimator {
 		double fitness = 0.0;
 		
 		double toDivide = 0.0;
-		double maxContent = (double)solution.getMaxContent();
+		int maxContent = solution.getMaxContent();
 		
 		for (Bin b : solution.getBinList()){
 			toDivide+= Math.pow(solution.getObjInBin(b)/maxContent, K);
@@ -93,20 +97,22 @@ public class Estimator implements ArcEstimator {
 		
 		fitness = toDivide/solution.getBinList().size();
 		
-		if (fitness > bestCost){
+		/*if (fitness > bestCost){
 			
 			bestCost = fitness;
 			this.bestSolution = solution;
-			this.numBinBestSol = solution.numBins();
-			}
-		/*
+			//System.out.println("Ho trovato una fitness migliore e ho bin " + this.bestSolution.numBins() );
+		}*/
+		System.out.println("Numero bin soluzione before" + solution.numBins()+ " Numero bin migliore " + this.numBinBestSol);
 		if (solution.numBins() < this.numBinBestSol){
 			System.out.println("Sono entrato perche' la nuova sol ha " + solution.numBins() + " bin e quella migliore ne ha " + this.numBinBestSol);
 			//this.numBinBestSol = solution.numBins();
 			setBestSol(solution,solution.numBins());
 			//this.bestSolution = solution;
 			System.out.println("Nell'if, ora la best solution e' " + solution.numBins() + " e quella settata e' " + this.bestSolution.numBins());
-		}*/
+		}
+		
+		System.out.println("Secondo il metodo il migliore e' " +this.numBinBestSol);
 		
 		double sum = 0;
 		//update pheromone for single object (equazione 7)

@@ -1,4 +1,4 @@
-package bppaco;
+package newbppaco;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ public class Bin {
 		this.capacityLeft = BIN_CAPACITY;
 		singlePheromones = new double[InitializeBPP.model.getObjects().size()];
 		for (int i = 0; i<singlePheromones.length; i++){
-			singlePheromones[i] = 1.0;
+			singlePheromones[i] = 1.0/*/InitializeBPP.model.getObjects().get(i)*/;
 		}
 	}
 	
