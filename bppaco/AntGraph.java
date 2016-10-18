@@ -28,7 +28,7 @@ public class AntGraph extends UntypedActor{
 		this.pheromone = new double[spaceSize][spaceSize];
 		for (int i=0; i<spaceSize; i++){
 			for (int j =0; j<spaceSize; j++){
-				this.pheromone[i][j] = 0;
+				this.pheromone[i][j] = 0.5;
 			}
 		}
 		this.estimator.setPheromones(pheromone);
@@ -40,7 +40,6 @@ public class AntGraph extends UntypedActor{
 			if (((Message) m).getType().equals(Message.MsgType.STATETRANS)){
 				AntSolution sol = ((Message) m).getLocalSolution();
 				int state = this.stateTransitionRule(sol);
-				System.out.println("Stato selezionato " + state);
 				Message msg = new Message(Message.MsgType.STATETRANS);
 				msg.setState(state);
 				getSender().tell(msg, getSelf());
@@ -73,6 +72,7 @@ public class AntGraph extends UntypedActor{
 	
 	
 	//equazione (6) per BPP
+	@SuppressWarnings("unused")
 	public int stateTransitionRule(AntSolution localSolution) {
 		
 		//lista di oggetti da poter inserire - before size checking
@@ -83,6 +83,7 @@ public class AntGraph extends UntypedActor{
 		
 		for(Bin b : localSolution.getBinList())
 			visitableNodes.removeAll(b.getObjects().keySet());
+		
 		
 		//per gli oggetti rimasti, devi togliere quelli che non ci stanno
 		Bin lastBin = localSolution.getLastBin();
@@ -97,16 +98,31 @@ public class AntGraph extends UntypedActor{
 		
 		if(!lightEnough.isEmpty()){
 			List<Double> cumulateCostOfNodes = new LinkedList<>();//probabilit� di includere un oggetto
+			List<Double> probabilities = new LinkedList<>();
 			double sumDivide = 0;
-			double cumulate = 0;
+			double cumulate = 0.0;
 			double result = 0.0;
+			double sum = 0;
 			
-			//calculate the division for probability
 			for (int i:lightEnough){
 				result = getTauBObj(i,lastBin)*Math.pow(etha[i],estimator.getBeta());
-				sumDivide+=result;
-				cumulateCostOfNodes.add(result);
-			}	
+				sumDivide+=result; //denominatore
+				//cumulateCostOfNodes.add(sumDivide);
+			}
+			
+			for (int i : lightEnough){
+				cumulateCostOfNodes.add(getTauBObj(i,lastBin)*Math.pow(etha[i],estimator.getBeta())/sumDivide + cumulate);
+				cumulate+=getTauBObj(i,lastBin)*Math.pow(etha[i],estimator.getBeta())/sumDivide;
+			}
+			
+			
+			for (int i = 0; i<cumulateCostOfNodes.size(); i++){
+				probabilities.add(cumulateCostOfNodes.get(i)/sumDivide);
+			}
+			
+			for (double i : probabilities){
+				sum+=i;
+			}
 			//calculating sumDivide
 			/*for (int i: lightEnough){
 				sumDivide += lastBin.getSinglePheromones()[i] * Math.pow(this.etha[i], estimator.getBeta());
@@ -120,9 +136,12 @@ public class AntGraph extends UntypedActor{
 			
 			Random r = new Random();
 			double choice = r.nextDouble();
+			/*double rangeMin = 0;
+			double rangeMax = 0.01;
+			double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();*/
 			//montecarlo 
 			for(int i = 0; i < cumulateCostOfNodes.size(); i++){
-				if(choice <= cumulateCostOfNodes.get(i)/sumDivide){
+				if(choice <= cumulateCostOfNodes.get(i)/*/sumDivide*/){
 					return lightEnough.get(i);//ritorno il prossimo oggetto da aggiungere
 				}
 			}
@@ -162,12 +181,17 @@ public class AntGraph extends UntypedActor{
 	public double getTauBObj(int obj, Bin b){
 		
 		double sum = 0.0;
-		for (int i: b.getObjects().keySet()){
-			if (i!=obj){
-				sum+= pheromone[obj][i];
+		if (!b.getObjects().isEmpty()){
+			for (int i: b.getObjects().keySet()){
+				if (i!=obj){
+					sum+= pheromone[obj][i];
+				}
 			}
+			sum = sum/(double)b.getObjects().size();		
 		}
-		sum = sum/(double)b.getObjects().size();
+		else {
+			sum = 1.0;
+		}
 		return sum;
 	}
 }
