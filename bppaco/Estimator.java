@@ -110,14 +110,14 @@ public class Estimator implements ArcEstimator {
 		
 		double sum = 0;
 		//update pheromone for single object (equazione 7)
-		for (Bin b: solution.getBinList()){
+		/*for (Bin b: solution.getBinList()){
 			for (int obj : b.getObjects().keySet()){
 				for (int obj1 : b.getObjects().keySet()){
 					sum += contributes[obj][obj1];
 				}
 				(b.getSinglePheromones())[obj] = sum/b.getObjects().size();
 			}
-		}
+		}*/
 	}
 	
 	public void setBestSol(AntSolution solution, int numBins){
