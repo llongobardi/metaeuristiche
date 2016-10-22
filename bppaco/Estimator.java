@@ -99,25 +99,7 @@ public class Estimator implements ArcEstimator {
 			this.bestSolution = solution;
 			this.numBinBestSol = solution.numBins();
 			}
-		/*
-		if (solution.numBins() < this.numBinBestSol){
-			System.out.println("Sono entrato perche' la nuova sol ha " + solution.numBins() + " bin e quella migliore ne ha " + this.numBinBestSol);
-			//this.numBinBestSol = solution.numBins();
-			setBestSol(solution,solution.numBins());
-			//this.bestSolution = solution;
-			System.out.println("Nell'if, ora la best solution e' " + solution.numBins() + " e quella settata e' " + this.bestSolution.numBins());
-		}*/
-		
-		double sum = 0;
-		//update pheromone for single object (equazione 7)
-		/*for (Bin b: solution.getBinList()){
-			for (int obj : b.getObjects().keySet()){
-				for (int obj1 : b.getObjects().keySet()){
-					sum += contributes[obj][obj1];
-				}
-				(b.getSinglePheromones())[obj] = sum/b.getObjects().size();
-			}
-		}*/
+	
 	}
 	
 	public void setBestSol(AntSolution solution, int numBins){

@@ -1,4 +1,4 @@
-package bppgenetic;
+package main;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinPacking {
+import bppgenetic.Element;
+import bppgenetic.Generation;
+
+public class MainGenetic {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		int elements[] = new int[120];
 
-		try (BufferedReader rd = new BufferedReader(new FileReader("src/binpack.txt"))){
+		try (BufferedReader rd = new BufferedReader(new FileReader("src/BPP_"+args[0]+".txt"))){
 			
 			String firstLine = rd.readLine();
 			String[] init =firstLine.split(" ");

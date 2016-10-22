@@ -14,11 +14,12 @@ public class InitializeBPP {
 	private int binCapacity;
 	private int nBinBestSol;
 	
-	public static InitializeBPP model = new InitializeBPP();
+	public static InitializeBPP model = null;
 
-	private InitializeBPP(){
+	private InitializeBPP(String s){
 		objects = new HashMap<>();
-		try (BufferedReader rd = new BufferedReader(new FileReader("src/binpack.txt"))){	
+		try (BufferedReader rd = new BufferedReader(new FileReader("src/BPP_"+s+".txt"))){
+			System.out.println("Running Instance " + s);
 			String firstLine = rd.readLine();
 			String[] init =firstLine.split(" ");
 			binCapacity = Integer.parseInt(init[0]);
@@ -35,8 +36,11 @@ public class InitializeBPP {
 		}
 	}
 	
+	public static void Initialize(String s){
+		model = new InitializeBPP(s);
+	}
+	
 	public HashMap <Integer,Integer> getObjects(){
-		//System.out.println(objects.toString());
 		return objects;
 	}
 	
